@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargar Imágenes</title>
+</head>
+<body>
+    <h1>Imágenes de Caracoles</h1>
+    <div id="imagenes"></div>
+
+    <script>
+        const listaCaracoles = [
+            "perro","azúcar"
+        ];
+
+        listaCaracoles.forEach((nombre, indice) => {
+            const contenedor = document.getElementById('imagenes');
+            const img = document.createElement('img');
+			//const img2 = document.createElement('img');
+
+            img.src = `https://source.unsplash.com/featured/?${encodeURIComponent(nombre)}`;
+			//img2.src = `https://duckduckgo.com/?t=h_&q=${encodeURIComponent(nombre)}&iax=images&ia=images`;
+
+            img.alt = nombre;
+            contenedor.appendChild(img);
+			            //contenedor.appendChild(img2);
+
+        });
+    </script>
+</body>
+</html>

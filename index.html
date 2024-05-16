@@ -43,84 +43,11 @@
 
 		</div>	
 		
-   <h1>Descargar Imágenes</h1>
-    <button onclick="descargarImagenes()">Descargar</button>
-
-    <script>
-        async function descargarImagenes() {
-            const axios = window.axios; // Asumiendo que axios está cargado globalmente
-            const fs = window.fs; // Asumiendo que fs está cargado globalmente
-
-            // Función para buscar imágenes en DuckDuckGo Images
-            async function buscarImagenes(query) {
-                try {
-                    //const response = await axios.get('https://api.duckduckgo.com/?q=${query}&format=json&iax=images&ia=images');
-					const response = await axios.get('https://duckduckgo.com/?t=h_&q=perro&iax=images&ia=images');
-                    if (response.data.ImageResults && response.data.ImageResults.length > 0) {
-                        return response.data.ImageResults.map(result => result.Image);
-                    } else {
-                        return [];
-                    }
-                } catch (error) {
-                    console.error('Error al buscar imágenes:', error);
-                    return [];
-                }
-            }
-
-            // Función para descargar una imagen
-            async function descargarImagen(url, nombreArchivo) {
-                try {
-                    const response = await axios({
-                        method: 'get',
-                        url: url,
-                        responseType: 'stream'
-                    });
-                    response.data.pipe(fs.createWriteStream(nombreArchivo));
-                    console.log(`Imagen descargada: ${nombreArchivo}`);
-                } catch (error) {
-                    console.error(`Error al descargar imagen ${url}:`, error);
-                }
-            }
-
-            // Lista de elementos para buscar imágenes
-            const lista = ['perro', 'gato', 'conejo', 'loro', 'elefante'];
-
-            // Directorio donde se guardarán las imágenes
-            const directorio = './resources';
-
-            // Crear el directorio si no existe
-            ////if (!fs.existsSync(directorio)) {
-            ////    fs.mkdirSync(directorio);
-            ////}
-
-            // Iterar sobre la lista y descargar las imágenes
-            lista.forEach(async (elemento, indice) => {
-                const imagenes = await buscarImagenes(elemento);
-                if (imagenes.length > 0) {
-                    const urlImagen = imagenes[0]; // Solo descarga la primera imagen de la búsqueda
-                    const nombreArchivo = '${directorio}/${elemento}_${indice}.jpg'; // Nombre de archivo único
-                    await descargarImagen(urlImagen, nombreArchivo);
-                } else {
-                    console.log(`No se encontraron imágenes para ${elemento}`);
-                }
-            });
-        }
-    </script>
-
-    <!-- Incluye Axios y FileSystem (fs) -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <script>
-        // Carga FileSystem solo si se ejecuta en Node.js
-        if (typeof require !== 'undefined') {
-            window.fs = require('fs');
-        }
-    </script>		
-		
+	
 		
 	</section>
-	<section style="visibility:hidden">
-		<img src="./resources/">
+	<section id="imagen0" style="visibility:hidden">
+		<img id="imagen">
 	</section>
 	<br/>
 </main>
@@ -132,255 +59,231 @@ function update (modo){
 
 // Objetos
 const objetos = [
-    "Bolígrafo",
-    "Papel",
-    "Lápiz",
-    "Cuaderno",
-    "Teléfono móvil",
-    "Computadora portátil",
-    "Llaves",
-    "Monedero",
-    "Reloj",
-    "Gafas",
-    "Cámara",
-    "Libro",
-    "Lámpara",
-    "Botella de agua",
-    "Bolsa de compras",
-    "Mochila",
-    "Paraguas",
-    "Auriculares",
-    "Pañuelos de papel",
-    "Encendedor",
-    "Linterna",
-    "Agenda",
-    "Termo",
-    "Par de calcetines",
-    "Sombrero",
-    "Bufanda",
-    "Guantes",
-    "Taza",
-    "Pluma estilográfica",
-    "Pinturas",
-    "Paleta de pintor",
-    "Pincel",
-    "Esmalte de uñas",
-    "Lima de uñas",
-    "Desodorante",
-    "Champú",
-    "Acondicionador",
-    "Jabón de manos",
-    "Cepillo de dientes",
-    "Pasta de dientes",
-    "Toalla",
-    "Cepillo para el cabello",
-    "Secador de pelo",
-    "Plancha de pelo",
-    "Pinzas para el cabello",
-    "Mascarilla facial",
-    "Crema hidratante",
-    "Protector solar",
-    "Maquillaje",
-    "Espejo",
-    "Tijeras",
-    "Hilo",
-    "Aguja",
-    "Alfileres",
-    "Cinta métrica",
-    "Caja de herramientas",
-    "Destornillador",
-    "Martillo",
-    "Sierra",
-    "Tornillo",
-    "Clavos",
-    "Tornillo de banco",
-    "Destornillador eléctrico",
-    "Llave inglesa",
-    "Llave de tubo",
-    "Alicates",
-    "Sierra eléctrica",
-    "Taladro",
-    "Cinta adhesiva",
-    "Pegamento",
-    "Grapas",
-    "Pistola de silicona",
-    "Nivel",
-    "Escalera",
-    "Escalera telescópica",
-    "Escoba",
-    "Recogedor",
-    "Cubo",
-    "Fregona",
-    "Bolsas de basura",
-    "Aspiradora",
-    "Plancha",
-    "Tabla de planchar",
-    "Perchas",
-    "Organizador de zapatos",
-    "Armario",
-    "Cajones",
-    "Perchero",
-    "Espejo de cuerpo entero",
-    "Tendedero de ropa",
-    "Platos",
-    "Vasos",
-    "Tazones",
-    "Cubiertos",
-    "Ollas",
-    "Sartenes",
-    "Tabla de cortar",
-    "Cuchillos",
-    "Espátulas",
-    "Batidora",
-    "Licuadora",
-    "Cafetera",
-    "Hervidor de agua",
-    "Tostadora",
-    "Microondas",
-    "Refrigerador",
-    "Congelador",
-    "Lavadora",
-    "Secadora",
-    "Lavavajillas",
-    "Televisión",
-    "Control remoto",
-    "Altavoces",
-    "Radio",
-    "Reproductor de música",
-    "DVD",
-    "Videoconsola",
-    "Juegos de mesa",
-    "Baraja de cartas",
-    "Puzzle",
-    "Bicicleta",
-    "Patines",
-    "Tabla de surf",
-    "Raqueta de tenis",
-    "Pelota de fútbol",
-    "Balón de baloncesto",
-    "Red de voleibol",
-    "Raqueta de bádminton",
-    "Palos de golf",
-    "Raqueta de squash",
-    "Canoa",
-    "Kayak",
-    "Tienda de campaña",
-    "Saco de dormir",
-    "Colchón de aire",
-    "Brújula",
-    "Mapa",
-    "Tienda de campaña",
-    "Mochila de senderismo",
-    "Botiquín de primeros auxilios",
-    "Binoculares",
-    "Cámara de fotos",
-    "GPS",
-    "Linterna de camping",
-    "Navaja suiza",
-    "Kit de supervivencia",
-    "Brújula",
-    "Botella de cantimplora",
-    "Botas de senderismo",
-    "Bastón de trekking",
-    "Silla",
-    "Mesa",
-    "Sofá",
-    "Cama",
-    "Armario",
-    "Cómoda",
-    "Escritorio",
-    "Estantería",
-    "Librero",
-    "Candelabro",
-    "Mantel",
-    "Servilletas",
-    "Copas",
-    "Vajilla",
-    "Cubiertos",
-    "Ollas",
-    "Sartenes",
-    "Cucharas de cocina",
-    "Espátula",
-    "Termómetro de cocina",
-    "Batidor",
-    "Cucharón",
-    "Tabla de cortar",
-    "Pelador",
-    "Embudo",
-    "Rallador",
-    "Abrelatas",
-    "Sacacorchos",
-    "Tupperware",
-    "Bandeja de horno",
-    "Molde para pastel",
-    "Termómetro de carne",
-    "Tabla para picar",
-    "Rollo de papel de cocina",
-    "Bolsas de basura",
-    "Bolsa de almuerzo",
-    "Recipiente para alimentos",
-    "Frascos de especias",
-    "Jarra de medición",
-    "Báscula de cocina",
-    "Abrelatas manual",
-    "Cubierta de sartén",
-    "Tapón de botella",
-    "Afilador de cuchillos",
-    "Trapos de cocina",
-    "Máquina de hacer helados",
-    "Espátula de goma",
-    "Embudo de cocina",
-    "Cucharas medidoras",
-    "Botella de agua reutilizable",
-   "Perro",
-    "Gato",
-    "Conejo",
-    "Hamster",
-    "Ratón",
-    "Rata",
-    "Gerbo",
-    "Cobaya",
-    "Hurón",
-    "Erizo",
-    "Chinchilla",
-    "Ardilla",
-    "Jerbo",
-    "Hámster",
-    "Petauro del azúcar",
-    "Ratón doméstico",
-    "Degú",
-    "Topo",
-    "Musaraña",
-    "Iguana verde",
-    "Iguana del Caribe",
-    "Gecko leopardo",
-    "Camaleón",
-    "Lagartija",
-    "Tortuga de caja",
-    "Tortuga rusa",
-    "Tortuga de orejas rojas",
-    "Tortuga de tierra",
-    "Tortuga de espolones",
-    "Tortuga de orejas amarillas",
-    "Cangrejo ermitaño",
-    "Caracol",
-    "Caracol de tierra",
-    "Caracol acuático",
-    "Caracol de jardín",
-    "Caracol de concha de cerámica",
-    "Caracol de concha de hélice",
-    "Caracol de concha de abanico",
-    "Caracol de concha de cono",
-    "Caracol de concha de caracol",
-    "Caracol de concha de trompeta",
-    "Caracol de concha de almeja",
-    "Caracol de concha de babosa",
-    "Caracol de concha de caracol marino",
-    "Caracol de concha de caracol terrestre",
-    "Caracol de concha de caracol de jardín",
-    "Caracol de concha de caracol acuático",
-    "Caracol de concha de caracol de río",
-    "Caracol de concha de caracol de mar"	
+["Bolígrafo","Pen","object"],
+["Papel","Paper","object"],
+["Lápiz","Pencil","object"],
+["Cuaderno","Notebook","object"],
+["Teléfono móvil","Mobile_phone","object"],
+["Computadora portátil","Laptop","object"],
+["Llaves","Keys","object"],
+["Monedero","Wallet","object"],
+["Reloj","Watch","object"],
+["Gafas","Glasses","object"],
+["Cámara","Camera","object"],
+["Libro","Book","object"],
+["Lámpara","Lamp","object"],
+["Botella de agua","Water_bottle","object"],
+["Bolsa de compras","Shopping_bag","object"],
+["Mochila","Backpack","object"],
+["Paraguas","Umbrella","object"],
+["Auriculares","Headphones","object"],
+["Pañuelos de papel","Tissues","object"],
+["Encendedor","Lighter","object"],
+["Linterna","Flashlight","object"],
+["Agenda","Agenda","object"],
+["Termo","Thermos","object"],
+["Par de calcetines","Pair_of_socks","clothes"],
+["Sombrero","Hat","clothes"],
+["Bufanda","Scarf","clothes"],
+["Guantes","Gloves","clothes"],
+["Taza","Cup","kitchen"],
+["Pluma estilográfica","Fountain_pen","object"],
+["Pinturas","Paints","object"],
+["Paleta de pintor","Painter's_palette","object"],
+["Pincel","Paintbrush","object"],
+["Esmalte de uñas","Nail_polish","object"],
+["Lima de uñas","Nail_file","object"],
+["Desodorante","Deodorant","object"],
+["Champú","Shampoo","object"],
+["Acondicionador","Conditioner","object"],
+["Jabón de manos","Hand_soap","object"],
+["Cepillo de dientes","Toothbrush","object"],
+["Pasta de dientes","Toothpaste","object"],
+["Toalla","Towel","object"],
+["Cepillo para el cabello","Hairbrush","object"],
+["Secador de pelo","Hair_dryer","object"],
+["Plancha de pelo","Hair_straightener","object"],
+["Pinzas para el cabello","Hair_clips","object"],
+["Mascarilla facial","Face_mask","object"],
+["Crema hidratante","Moisturizer","object"],
+["Protector solar","Sunscreen","object"],
+["Maquillaje","Makeup","object"],
+["Espejo","Mirror","object"],
+["Tijeras","Scissor","tool"],
+["Hilo","Thread","object"],
+["500 Agujas","Needles","object"],
+["500 Alfileres","sewing_pin"],
+["Cinta métrica","Measuring_tape","object"],
+["Caja de herramientas","Toolbox","object"],
+["Destornillador","Screwdriver","tool"],
+["Martillo","Hammer","tool"],
+["Sierra","chainsaw","tool"],
+["Tornillo","Screw","object"],
+["Clavos","Nails","object"],
+["Tornillo de banco","Bench_vise","object"],
+["Destornillador eléctrico","Electric_screwdriver","tool"],
+["Llave inglesa","Adjustable_wrench","tool"],
+["Llave de tubo","Pipe_wrench","tool"],
+["Alicates","Pliers","tool"],
+["Sierra eléctrica","Electric_saw","tool"],
+["Taladro","Drill","tool"],
+["Cinta adhesiva","Tape","object"],
+["Pegamento","Glue","object"],
+["500 Grapas","Staples","object"],
+["Pistola de silicona","Glue_gun","tool"],
+["Nivel","Level","tool"],
+["Escalera","Ladder","object"],
+["Escoba","Broom","object"],
+["Recogedor","Dustpan","object"],
+["Cubo","Bucket","object"],
+["Fregona","Mop","object"],
+["20 Bolsas de basura","Garbage_bags","object"],
+["Aspiradora","Vacuum_cleaner","object"],
+["Plancha","Iron","object"],
+["Tabla de planchar","Ironing_board","object"],
+["2 Perchas","Hangers","object"],
+["Organizador de zapatos","Shoe_organizer","object"],
+["Armario","Wardrobe","object"],
+["Cajón","Drawer","object"],
+["Perchero","Coat_rack","object"],
+["Espejo de cuerpo entero","Full-length_mirror","object"],
+["Tendedero de ropa","Clothesline","object"],
+["Platos","Plates","kitchen"],
+["Vaso","Glass","kitchen"],
+["Tazón","Bowl","kitchen"],
+["Cubiertos","Cutlery","kitchen"],
+["Olla","Pot","kitchen"],
+["Sartén","Pan","kitchen"],
+["Tabla de cortar","Cutting_board","kitchen"],
+["Cuchillo","Knive","kitchen"],
+["Espátula","Spatula","kitchen"],
+["Batidora","Blender","kitchen"],
+["Licuadora","Mixer","kitchen"],
+["Cafetera","Coffee_maker","kitchen"],
+["Hervidor de agua","Kettle","kitchen"],
+["Tostadora","Toaster","kitchen"],
+["Microondas","Microwave","kitchen"],
+["Refrigerador","Refrigerator","kitchen"],
+["Congelador","Freezer","kitchen"],
+["Lavadora","Washing_machine","object"],
+["Secadora","Dryer","object"],
+["Lavavajillas","Dishwasher","object"],
+["Televisor","tv","object"],
+["Control remoto","Remote_control","object"],
+["Altavoces","Speakers","object"],
+["Radio","Radio","object"],
+["Reproductor de música","Music_player","object"],
+["DVD","DVD","object"],
+["Videoconsola","Game_console","object"],
+["Juego de mesa","Board_game","object"],
+["Baraja de cartas","Deck_of_cards","object"],
+["Puzzle","Puzzle","object"],
+["Bicicleta","Bicycle","object"],
+["Patines","Skates","object"],
+["Tabla de surf","Surfboard","object"],
+["Raqueta de tenis","Tennis_racket","object"],
+["Pelota de fútbol","Soccer_ball","object"],
+["Balón de baloncesto","Basketball","object"],
+["Red de voleibol","Volleyball_net","object"],
+["Raqueta de bádminton","Badminton_racket","object"],
+["Palos de golf","Golf_clubs","object"],
+["Raqueta de squash","Squash_racket","object"],
+["Canoa","Canoe","object"],
+["Kayak","Kayak","object"],
+["Tienda de campaña","Tent","object"],
+["Saco de dormir","Sleeping_bag","object"],
+["Colchón de aire","Air_mattress","object"],
+["Brújula","Compass","object"],
+["Mapa","Map","object"],
+["Tienda de campaña","Tent","object"],
+["Mochila de senderismo","Hiking_backpack","object"],
+["Botiquín de primeros auxilios","First_aid_kit","object"],
+["Binoculares","Binoculars","object"],
+["Cámara de fotos","Camera","object"],
+["GPS","GPS","object"],
+["Linterna de camping","Camping_lantern","object"],
+["Navaja suiza","Swiss_Army_knife","object"],
+["Kit de supervivencia","Survival_kit","object"],
+["Brújula","Compass","object"],
+["Botella de cantimplora","Water_bottle","object"],
+["Botas de senderismo","Hiking_boots","object"],
+["Bastón de trekking","Trekking_pole","object"],
+["Silla","Chair","object"],
+["Mesa","Table","object"],
+["Sofá","Sofa","object"],
+["Cama","Bed","object"],
+["Armario","Wardrobe","object"],
+["Cómoda","Dresser","object"],
+["Escritorio","Desk","object"],
+["Estantería","Bookshelf","object"],
+["Librero","Bookcase","object"],
+["Candelabro","Chandelier","object"],
+["Mantel","Tablecloth","object"],
+["Servilletas","Napkins","object"],
+["Copas","Glasses","object"],
+["Vajilla","Tableware","object"],
+["Cubiertos","Cutlery","object"],
+["Ollas","Pots","object"],
+["Sartenes","Pans","object"],
+["Cucharas de cocina","Kitchen_spoons","object"],
+["Espátula","Spatula","object"],
+["Termómetro de cocina","Kitchen_thermometer","object"],
+["Batidor","Whisk","object"],
+["Cucharón","Ladle","object"],
+["Tabla de cortar","Cutting_board","object"],
+["Pelador","Peeler","object"],
+["Embudo","Funnel","object"],
+["Rallador","Grater","object"],
+["Abrelatas","Can_opener","object"],
+["Sacacorchos","Corkscrew","object"],
+["Tupperware","Tupperware","object"],
+["Bandeja de horno","Baking_tray","object"],
+["Molde para pastel","Cake_mold","object"],
+["Termómetro de carne","Meat_thermometer","object"],
+["Tabla para picar","Chopping_board","object"],
+["Rollo de papel de cocina","Kitchen_roll","object"],
+["Bolsas de basura","Garbage_bags","object"],
+["Bolsa de almuerzo","Lunch_bag","object"],
+["Recipiente para alimentos","Food_container","object"],
+["Frascos de especias","Spice_jars","object"],
+["Jarra de medición","Measuring_jug","object"],
+["Báscula de cocina","Kitchen_scale","object"],
+["Abrelatas manual","Manual_can_opener","object"],
+["Cubierta de sartén","Pan_cover","object"],
+["Tapón de botella","Bottle_stopper","object"],
+["Afilador de cuchillos","Knife_sharpener","object"],
+["Trapos de cocina","Kitchen_towels","object"],
+["Máquina de hacer helados","Ice_cream_maker","object"],
+["Espátula de goma","Rubber_spatula","object"],
+["Embudo de cocina","Kitchen_funnel","object"],
+["Cucharas medidoras","Measuring_spoons","object"],
+["Botella de agua reutilizable","Reusable_water_bottle","object"],
+["Perro","Dog","animal"],
+["Gato","Cat","animal"],
+["Conejo","Rabbit","animal"],
+["Hamster","Hamster","animal"],
+["Ratón","Mouse","animal"],
+["Rata","Rat","animal"],
+["Gerbo","Gerbil","animal"],
+["Cobaya","Guinea_pig","animal"],
+["Hurón","Ferret","animal"],
+["Erizo","Hedgehog","animal"],
+["Chinchilla","Chinchilla","animal"],
+["Ardilla","Squirrel","animal"],
+["Jerbo","gerbil","animal"],
+["Hámster","Hamster","animal"],
+["Ratón","mouse","animal"],
+["Topo","Mole","animal"],
+["Musaraña","Shrew","animal"],
+["Iguana","iguana","animal"],
+["Gecko","gecko","animal"],
+["Camaleón","Chameleon","animal"],
+["Lagartija","Lizard","animal"],
+["Tortuga","Box_turtle","animal"],
+["Cangrejo","crab","animal"],
+["Caracol","Snail","animal"]
+
+
 	
 ];
 
@@ -389,7 +292,7 @@ const objetos = [
 	var aleatorio = Math.floor(Math.random() * objetos.length)
 		shuffleArray(objetos)
 	
-		document.getElementById("seleccion").innerHTML = "1 x " + objetos[aleatorio]
+		document.getElementById("seleccion").innerHTML = "1 x " + objetos[aleatorio][0]
 		document.getElementById("doble").style.visibility=""
 		document.getElementById("click").disabled = true;
 	//console.log (objetos[aleatorio])
@@ -402,11 +305,37 @@ const objetos = [
 	var aleatorio = Math.floor(Math.random() * objetos.length)
 		shuffleArray(objetos)
 	
-		document.getElementById("seleccion").innerHTML = "2 x " + objetos[aleatorio]
+		document.getElementById("seleccion").innerHTML = "2 x " + objetos[aleatorio][0]
 		document.getElementById("doble").disabled = true;
 		document.getElementById("click").disabled = true;	
 
 	}
+/*document.getElementById("imagen").src = "https://loremflickr.com/320/240/" +objetos[aleatorio][1]+","+objetos[aleatorio][2]+"/all"
+document.getElementById("imagen0").style.visibility = "";
+
+var img = document.createElement('img');
+var br = document.createElement('br')
+var contenedor = document.getElementById('imagen0');
+for (i=0; i<objetos.length; i++){
+
+	var img = document.createElement('img');
+
+	if (objetos[i].length>1){
+
+		img.src =  "https://loremflickr.com/320/240/" +objetos[i][1]+","+objetos[i][2]+"/all"
+
+	}else{
+		img.src =  "https://loremflickr.com/320/240/" +objetos[i][1]+"/all"
+
+	}
+contenedor.innerhtml = i
+contenedor.appendChild(img);
+contenedor.appendChild(br);
+
+}
+
+
+*/
 
 }	
 
