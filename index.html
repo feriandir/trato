@@ -38,7 +38,7 @@
 
 		</div>
 		
-		<div  style="margin-top: -2em;    font-size: 2.5em;    position: fixed;    margin-left: 5em;e" id="seleccion">
+		<div  style="margin-top: -3em;    font-size: 2.5em;    position: fixed;    margin-left: 5em;white-space: pre-wrap;" id="seleccion">
 			
 
 		</div>	
@@ -292,7 +292,7 @@ const objetos = [
 	var aleatorio = Math.floor(Math.random() * objetos.length)
 		shuffleArray(objetos)
 	
-		document.getElementById("seleccion").innerHTML = "1 x " + objetos[aleatorio][0]
+		document.getElementById("seleccion").innerHTML = "x1: " + objetos[aleatorio][0]
 		document.getElementById("doble").style.visibility=""
 		document.getElementById("click").disabled = true;
 	//console.log (objetos[aleatorio])
@@ -305,7 +305,7 @@ const objetos = [
 	var aleatorio = Math.floor(Math.random() * objetos.length)
 		shuffleArray(objetos)
 	
-		document.getElementById("seleccion").innerHTML = "2 x " + objetos[aleatorio][0]
+		document.getElementById("seleccion").innerHTML+= "&#13;&#10" + " o " + "&#13;&#10;" + "x2: " + objetos[aleatorio][0]
 		document.getElementById("doble").disabled = true;
 		document.getElementById("click").disabled = true;	
 
