@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<h1>¿Aceptas 1 millón de euros a cambio de meterte el objeto por el otro?</h1>
+<p style="opacity:0.5; margin-bottom:1.7em;">Puedes pedir un doble o nada: Cambias de objeto pero debes meterte DOS</p>
+
+
+			<style>
+				main {
+					
+					margin:0 auto;
+				}
+				section {
+					background:#fff;
+					padding:1em;
+					border-radius:3px;
+					box-shadow: 0 0.5px 0 0 #ffffff inset, 0 1px 2px 0 #B3B3B3;
+					margin-top:1em;
+					width:max-content;
+				}
+				body {
+					background-color:#f6f6f6;	
+				}
+				
+			</style>
+</head>
+<body>
+
+<main>
+	<section>
+		<p style="font-size:[fontSize]%; color:[fontColor]; margin:0" >Elige tu destino:</p>
+				
+		<div style="margin-top:1em;">
+			<button id="click" onclick="update(1);">ELEGIR OBJETO</button>
+		</div>
+		<div  style="margin-top:1em;">
+			<button id="doble" onclick="update(2);" style="visibility:hidden">DOBLE o NADA</button>
+
+		</div>
+		
+		<div  style="margin-top: -2em;    font-size: 2.5em;    position: fixed;    margin-left: 5em;e" id="seleccion">
+			
+
+		</div>	
+		
+   <h1>Descargar Imágenes</h1>
+    <button onclick="descargarImagenes()">Descargar</button>
+
+    <script>
+        async function descargarImagenes() {
+            const axios = window.axios; // Asumiendo que axios está cargado globalmente
+            const fs = window.fs; // Asumiendo que fs está cargado globalmente
+
+            // Función para buscar imágenes en DuckDuckGo Images
+            async function buscarImagenes(query) {
+                try {
+                    //const response = await axios.get('https://api.duckduckgo.com/?q=${query}&format=json&iax=images&ia=images');
+					const response = await axios.get('https://duckduckgo.com/?t=h_&q=perro&iax=images&ia=images');
+                    if (response.data.ImageResults && response.data.ImageResults.length > 0) {
+                        return response.data.ImageResults.map(result => result.Image);
+                    } else {
+                        return [];
+                    }
+                } catch (error) {
+                    console.error('Error al buscar imágenes:', error);
+                    return [];
+                }
+            }
+
+            // Función para descargar una imagen
+            async function descargarImagen(url, nombreArchivo) {
+                try {
+                    const response = await axios({
+                        method: 'get',
+                        url: url,
+                        responseType: 'stream'
+                    });
+                    response.data.pipe(fs.createWriteStream(nombreArchivo));
+                    console.log(`Imagen descargada: ${nombreArchivo}`);
+                } catch (error) {
+                    console.error(`Error al descargar imagen ${url}:`, error);
+                }
+            }
+
+            // Lista de elementos para buscar imágenes
+            const lista = ['perro', 'gato', 'conejo', 'loro', 'elefante'];
+
+            // Directorio donde se guardarán las imágenes
+            const directorio = './resources';
+
+            // Crear el directorio si no existe
+            ////if (!fs.existsSync(directorio)) {
+            ////    fs.mkdirSync(directorio);
+            ////}
+
+            // Iterar sobre la lista y descargar las imágenes
+            lista.forEach(async (elemento, indice) => {
+                const imagenes = await buscarImagenes(elemento);
+                if (imagenes.length > 0) {
+                    const urlImagen = imagenes[0]; // Solo descarga la primera imagen de la búsqueda
+                    const nombreArchivo = '${directorio}/${elemento}_${indice}.jpg'; // Nombre de archivo único
+                    await descargarImagen(urlImagen, nombreArchivo);
+                } else {
+                    console.log(`No se encontraron imágenes para ${elemento}`);
+                }
+            });
+        }
+    </script>
+
+    <!-- Incluye Axios y FileSystem (fs) -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        // Carga FileSystem solo si se ejecuta en Node.js
+        if (typeof require !== 'undefined') {
+            window.fs = require('fs');
+        }
+    </script>		
+		
+		
+	</section>
+	<section style="visibility:hidden">
+		<img src="./resources/">
+	</section>
+	<br/>
+</main>
+
+
+
+<script>
+function update (modo){
+
+// Objetos
+const objetos = [
+    "Bolígrafo",
+    "Papel",
+    "Lápiz",
+    "Cuaderno",
+    "Teléfono móvil",
+    "Computadora portátil",
+    "Llaves",
+    "Monedero",
+    "Reloj",
+    "Gafas",
+    "Cámara",
+    "Libro",
+    "Lámpara",
+    "Botella de agua",
+    "Bolsa de compras",
+    "Mochila",
+    "Paraguas",
+    "Auriculares",
+    "Pañuelos de papel",
+    "Encendedor",
+    "Linterna",
+    "Agenda",
+    "Termo",
+    "Par de calcetines",
+    "Sombrero",
+    "Bufanda",
+    "Guantes",
+    "Taza",
+    "Pluma estilográfica",
+    "Pinturas",
+    "Paleta de pintor",
+    "Pincel",
+    "Esmalte de uñas",
+    "Lima de uñas",
+    "Desodorante",
+    "Champú",
+    "Acondicionador",
+    "Jabón de manos",
+    "Cepillo de dientes",
+    "Pasta de dientes",
+    "Toalla",
+    "Cepillo para el cabello",
+    "Secador de pelo",
+    "Plancha de pelo",
+    "Pinzas para el cabello",
+    "Mascarilla facial",
+    "Crema hidratante",
+    "Protector solar",
+    "Maquillaje",
+    "Espejo",
+    "Tijeras",
+    "Hilo",
+    "Aguja",
+    "Alfileres",
+    "Cinta métrica",
+    "Caja de herramientas",
+    "Destornillador",
+    "Martillo",
+    "Sierra",
+    "Tornillo",
+    "Clavos",
+    "Tornillo de banco",
+    "Destornillador eléctrico",
+    "Llave inglesa",
+    "Llave de tubo",
+    "Alicates",
+    "Sierra eléctrica",
+    "Taladro",
+    "Cinta adhesiva",
+    "Pegamento",
+    "Grapas",
+    "Pistola de silicona",
+    "Nivel",
+    "Escalera",
+    "Escalera telescópica",
+    "Escoba",
+    "Recogedor",
+    "Cubo",
+    "Fregona",
+    "Bolsas de basura",
+    "Aspiradora",
+    "Plancha",
+    "Tabla de planchar",
+    "Perchas",
+    "Organizador de zapatos",
+    "Armario",
+    "Cajones",
+    "Perchero",
+    "Espejo de cuerpo entero",
+    "Tendedero de ropa",
+    "Platos",
+    "Vasos",
+    "Tazones",
+    "Cubiertos",
+    "Ollas",
+    "Sartenes",
+    "Tabla de cortar",
+    "Cuchillos",
+    "Espátulas",
+    "Batidora",
+    "Licuadora",
+    "Cafetera",
+    "Hervidor de agua",
+    "Tostadora",
+    "Microondas",
+    "Refrigerador",
+    "Congelador",
+    "Lavadora",
+    "Secadora",
+    "Lavavajillas",
+    "Televisión",
+    "Control remoto",
+    "Altavoces",
+    "Radio",
+    "Reproductor de música",
+    "DVD",
+    "Videoconsola",
+    "Juegos de mesa",
+    "Baraja de cartas",
+    "Puzzle",
+    "Bicicleta",
+    "Patines",
+    "Tabla de surf",
+    "Raqueta de tenis",
+    "Pelota de fútbol",
+    "Balón de baloncesto",
+    "Red de voleibol",
+    "Raqueta de bádminton",
+    "Palos de golf",
+    "Raqueta de squash",
+    "Canoa",
+    "Kayak",
+    "Tienda de campaña",
+    "Saco de dormir",
+    "Colchón de aire",
+    "Brújula",
+    "Mapa",
+    "Tienda de campaña",
+    "Mochila de senderismo",
+    "Botiquín de primeros auxilios",
+    "Binoculares",
+    "Cámara de fotos",
+    "GPS",
+    "Linterna de camping",
+    "Navaja suiza",
+    "Kit de supervivencia",
+    "Brújula",
+    "Botella de cantimplora",
+    "Botas de senderismo",
+    "Bastón de trekking",
+    "Silla",
+    "Mesa",
+    "Sofá",
+    "Cama",
+    "Armario",
+    "Cómoda",
+    "Escritorio",
+    "Estantería",
+    "Librero",
+    "Candelabro",
+    "Mantel",
+    "Servilletas",
+    "Copas",
+    "Vajilla",
+    "Cubiertos",
+    "Ollas",
+    "Sartenes",
+    "Cucharas de cocina",
+    "Espátula",
+    "Termómetro de cocina",
+    "Batidor",
+    "Cucharón",
+    "Tabla de cortar",
+    "Pelador",
+    "Embudo",
+    "Rallador",
+    "Abrelatas",
+    "Sacacorchos",
+    "Tupperware",
+    "Bandeja de horno",
+    "Molde para pastel",
+    "Termómetro de carne",
+    "Tabla para picar",
+    "Rollo de papel de cocina",
+    "Bolsas de basura",
+    "Bolsa de almuerzo",
+    "Recipiente para alimentos",
+    "Frascos de especias",
+    "Jarra de medición",
+    "Báscula de cocina",
+    "Abrelatas manual",
+    "Cubierta de sartén",
+    "Tapón de botella",
+    "Afilador de cuchillos",
+    "Trapos de cocina",
+    "Máquina de hacer helados",
+    "Espátula de goma",
+    "Embudo de cocina",
+    "Cucharas medidoras",
+    "Botella de agua reutilizable",
+   "Perro",
+    "Gato",
+    "Conejo",
+    "Hamster",
+    "Ratón",
+    "Rata",
+    "Gerbo",
+    "Cobaya",
+    "Hurón",
+    "Erizo",
+    "Chinchilla",
+    "Ardilla",
+    "Jerbo",
+    "Hámster",
+    "Petauro del azúcar",
+    "Ratón doméstico",
+    "Degú",
+    "Topo",
+    "Musaraña",
+    "Iguana verde",
+    "Iguana del Caribe",
+    "Gecko leopardo",
+    "Camaleón",
+    "Lagartija",
+    "Tortuga de caja",
+    "Tortuga rusa",
+    "Tortuga de orejas rojas",
+    "Tortuga de tierra",
+    "Tortuga de espolones",
+    "Tortuga de orejas amarillas",
+    "Cangrejo ermitaño",
+    "Caracol",
+    "Caracol de tierra",
+    "Caracol acuático",
+    "Caracol de jardín",
+    "Caracol de concha de cerámica",
+    "Caracol de concha de hélice",
+    "Caracol de concha de abanico",
+    "Caracol de concha de cono",
+    "Caracol de concha de caracol",
+    "Caracol de concha de trompeta",
+    "Caracol de concha de almeja",
+    "Caracol de concha de babosa",
+    "Caracol de concha de caracol marino",
+    "Caracol de concha de caracol terrestre",
+    "Caracol de concha de caracol de jardín",
+    "Caracol de concha de caracol acuático",
+    "Caracol de concha de caracol de río",
+    "Caracol de concha de caracol de mar"	
+	
+];
+
+	if (modo == 1){
+
+	var aleatorio = Math.floor(Math.random() * objetos.length)
+		shuffleArray(objetos)
+	
+		document.getElementById("seleccion").innerHTML = "1 x " + objetos[aleatorio]
+		document.getElementById("doble").style.visibility=""
+		document.getElementById("click").disabled = true;
+	//console.log (objetos[aleatorio])
+	
+	
+	
+	
+	}else{
+	
+	var aleatorio = Math.floor(Math.random() * objetos.length)
+		shuffleArray(objetos)
+	
+		document.getElementById("seleccion").innerHTML = "2 x " + objetos[aleatorio]
+		document.getElementById("doble").disabled = true;
+		document.getElementById("click").disabled = true;	
+
+	}
+
+}	
+
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+</script>
+</body>
+</html>
